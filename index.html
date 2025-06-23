@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Goldbach Conjecture Tester</title>
+    <!-- Tailwind CSS CDN for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
+    <div class="container w-full" role="main">
+        <div class="flex items-center justify-center mb-6">
+            <h1 class="text-3xl font-bold text-gray-800 text-center mr-2">Goldbach Conjecture Tester</h1>
+            <button id="readMeToggleBtn" class="info-icon-btn ml-2" aria-label="Show explanation about Goldbach Conjecture" aria-haspopup="dialog" aria-controls="readMeModal">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-indigo-600 hover:text-indigo-800 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="#fff"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 16v-4m0-4h.01" />
+                </svg>
+            </button>
+            <span class="ml-1 text-sm text-gray-500">What is this? (Explanation)</span>
+        </div>
+        <form id="numberForm" class="mb-6" autocomplete="off" aria-label="Number input form" onsubmit="return false;">
+            <label for="numberInput" class="block text-gray-700 text-lg font-medium mb-2">Enter an integer:</label>
+            <input type="number" id="numberInput" placeholder="e.g., 100 or 17" class="w-full" aria-required="true" aria-describedby="inputHelp" min="1" max="1000000" required>
+            <span id="inputHelp" class="text-xs text-gray-500 block mt-1">Only positive integers up to 1,000,000 are allowed.</span>
+        </form>
+        <div id="messageBox" class="message-box" role="alert" aria-live="assertive"></div>
+        <div class="tabs mb-6" role="tablist" aria-label="Goldbach Conjecture Tabs">
+            <div class="flex border-b border-gray-200">
+                <button id="strongTabBtn" type="button" role="tab" aria-selected="true" aria-controls="strongTabContent"
+                    class="flex-1 py-2 px-4 text-lg font-medium text-center text-gray-600 border-b-2 border-transparent hover:text-indigo-600 hover:border-indigo-300">Strong
+                    Goldbach</button>
+                <button id="weakTabBtn" type="button" role="tab" aria-selected="false" aria-controls="weakTabContent"
+                    class="flex-1 py-2 px-4 text-lg font-medium text-center text-gray-600 border-b-2 border-transparent hover:text-indigo-600 hover:border-indigo-300">Weak
+                    Goldbach</button>
+            </div>
+            <div id="strongTabContent" class="tab-content pt-4" role="tabpanel" aria-labelledby="strongTabBtn">
+                <p class="text-gray-700 mb-4">
+                    <span class="font-semibold">Strong Goldbach Conjecture:</span> Every even integer greater than 2 is
+                    the sum of two prime numbers.
+                </p>
+                <button id="testStrongBtn" class="btn-primary w-full">Test Strong Conjecture</button>
+            </div>
+            <div id="weakTabContent" class="tab-content pt-4 hidden" role="tabpanel" aria-labelledby="weakTabBtn">
+                <p class="text-gray-700 mb-4">
+                    <span class="font-semibold">Weak Goldbach Conjecture:</span> Every odd integer greater than 5 can be
+                    expressed as the sum of three prime numbers.
+                </p>
+                <button id="testWeakBtn" class="btn-secondary w-full">Test Weak Conjecture</button>
+            </div>
+        </div>
+        <div class="mt-8">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4">Results:</h2>
+            <div id="results" class="result-box text-gray-900 text-base">
+                No tests performed yet. Enter a number and click a test button above.
+            </div>
+        </div>
+    </div>
+    <!-- Modal for Read Me -->
+    <div id="readMeModal" class="modal-overlay hidden" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="readMeTitle" style="display:none;">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content result-box text-gray-800 bg-white">
+                <button id="closeReadMeModal" class="btn-secondary absolute top-4 right-4" aria-label="Close detailed explanation">&times;</button>
+                <h3 id="readMeTitle" class="text-xl font-bold mb-3 text-indigo-700">Understanding Goldbach Conjectures</h3>
+                <p class="mb-2">
+                    The <span class="font-semibold">Goldbach Conjectures</span> are two of the oldest and best-known
+                    unsolved problems in number theory and mathematics. They propose properties of prime numbers and
+                    their sums.
+                </p>
+                <h4 class="text-lg font-semibold mb-1 text-indigo-600">Strong Goldbach Conjecture</h4>
+                <p class="mb-2">
+                    Also known as the binary Goldbach Conjecture, it states that: <span class="italic">"Every even
+                        integer greater than 2 is the sum of two prime numbers."</span> For example, 4 = 2 + 2, 6 = 3
+                    + 3, 8 = 3 + 5, 10 = 3 + 7 or 5 + 5. This conjecture has been tested for all even numbers up
+                    to 4 × 10<sup>18</sup> and holds true, but a formal mathematical proof remains elusive.
+                </p>
+                <h4 class="text-lg font-semibold mb-1 text-indigo-600">Weak Goldbach Conjecture</h4>
+                <p class="mb-2">
+                    Also known as the ternary Goldbach Conjecture, it states that: <span class="italic">"Every odd
+                        integer greater than 5 can be expressed as the sum of three prime numbers."</span> For example,
+                    7 = 2 + 2 + 3, 9 = 3 + 3 + 3, 11 = 3 + 3 + 5. The weak Goldbach Conjecture was proven by
+                    Harald Helfgott in 2013, making it no longer an open problem. However, it's considered "weak"
+                    because if the strong conjecture is true, then the weak conjecture would automatically be true
+                    (since an odd number n > 5 can be written as n = (n-3) + 3, and if n-3 is an even number
+                    greater than 2, it can be written as p₁ + p₂, thus n = p₁ + p₂ + 3).
+                </p>
+                <p class="mt-3">
+                    <span class="font-semibold">How to Use This Tester:</span>
+                <ul class="list-disc list-inside ml-4">
+                    <li>Enter an integer into the input field.</li>
+                    <li>Select either "Strong Goldbach" or "Weak Goldbach" tab.</li>
+                    <li>Click the "Test Strong Conjecture" or "Test Weak Conjecture" button in the respective tab.</li>
+                    <li>The results will appear below. Note that the Strong Conjecture requires an even number greater
+                        than 2, and the Weak Conjecture requires an odd number greater than 5.</li>
+                    <li>Numbers above 1,000,000 cannot be tested due to computational limitations.</li>
+                </ul>
+                </p>
+            </div>
+        </div>
+    </div>
+    <script src="goldbach.js"></script>
+    <script>
+    // Modal logic for Read Me
+    document.addEventListener('DOMContentLoaded', function() {
+      const readMeToggleBtn = document.getElementById('readMeToggleBtn');
+      const readMeModal = document.getElementById('readMeModal');
+      const closeReadMeModal = document.getElementById('closeReadMeModal');
+      if (!readMeToggleBtn || !readMeModal || !closeReadMeModal) return;
+      function openModal() {
+        readMeModal.classList.remove('hidden');
+        readMeModal.style.display = 'flex';
+        setTimeout(() => readMeModal.focus(), 50);
+        document.body.style.overflow = 'hidden';
+      }
+      function closeModal() {
+        readMeModal.classList.add('hidden');
+        readMeModal.style.display = 'none';
+        document.body.style.overflow = '';
+        readMeToggleBtn.focus();
+      }
+      readMeToggleBtn.addEventListener('click', openModal);
+      closeReadMeModal.addEventListener('click', closeModal);
+      readMeModal.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') closeModal();
+      });
+      readMeModal.addEventListener('mousedown', function(e) {
+        if (e.target === readMeModal) closeModal();
+      });
+    });
+    </script>
+</body>
+</html>
